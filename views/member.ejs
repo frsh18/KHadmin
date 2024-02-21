@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員留言板</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            color: #333;
+        }
+
+        .message-container {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #4caf50;
+        }
+
+        .message-form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .form-group button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+
+        .message-list {
+            text-align: left;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .message-header {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .message-content {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination a {
+            color: #333;
+            text-decoration: none;
+            padding: 8px;
+            margin: 0 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            transition: background-color 0.3s;
+        }
+
+        .pagination a.active {
+            background-color: #4caf50;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>會員留言板</h1>
+        <div>哈摟，<%= name %>!! 歡迎光臨!!</div>
+        
+            <form class="message-form" id="messageForm" action="/memberup" method="POST">
+                <div class="form-group">
+                    <label for="name">用戶名：<%= name %></label>
+                    <input type="hidden" name="name" value="<%= name %>">
+                </div>
+                <div class="form-group">
+                    <label for="userMessage">留言：</label>
+                    <textarea type="text" id="message" name="message" rows="4" style="height: 120px; width: 1362px;" required ></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit">發送留言</button>
+                </div>
+            </form>
+    
+            <div class="message-list" id="messageList">
+                <h2>以下是留言</h2>
+                <% if (data && data.length > 0) { %>
+                    <% for (let i = 0; i < data.length; i++) { %>
+                        <div class="message">
+                            <div class="message-header">
+                                <strong><%= data[i].name %></strong>
+                            </div>
+                            <div class="message-content">
+                                <%= data[i].message %>
+                            </div>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <p>暫時沒有留言。</p>
+                <% } %>
+                
+                <!-- 分頁導航 -->
+                <div class="pagination">
+                    <% if (totalPages > 1) { %>
+                        <% for (let page = 1; page <= totalPages; page++) { %>
+                            <a href="/member?page=<%= page %>" class="<%= page === currentPage ? 'active' : '' %>">
+                                <%= page %>
+                            </a>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+    
+            <div>
+                <a href="/signout">登出會員</a>
+            </div>
+        
+    </header>
+</body>
+</html>
